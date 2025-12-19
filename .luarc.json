@@ -1,0 +1,33 @@
+{
+	"language.fixIndent": false,
+	"runtime.builtin": {
+		"basic": "default",
+		"bit": "default",
+		"bit32": "default",
+		"builtin": "default",
+		"coroutine": "disable",
+		"debug": "disable",
+		"ffi": "default",
+		"io": "disable",
+		"jit": "default",
+		"jit.profile": "default",
+		"jit.util": "default",
+		"math": "disable",
+		"os": "disable",
+		"package": "disable",
+		"string": "default",
+		"string.buffer": "default",
+		"table": "default",
+		"table.clear": "default",
+		"table.new": "default",
+		"utf8": "default"
+	},
+	"runtime.version": "Lua 5.2",
+	"diagnostics.globals": ["vim", "__DebugAdapter", "__Profiler"],
+	"diagnostics.disable": ["lowercase-global"],
+	"runtime.plugin": "/home/zack/.local/share/LuaAddons/factorio/plugin.lua",
+	"workspace.library": [
+		"/home/zack/.local/share/LuaAddons/factorio",
+		"/home/zack/.local/share/LuaAddons/factorio-data"
+	]
+}
