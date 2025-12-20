@@ -28,6 +28,7 @@
 	"runtime.plugin": "/home/zack/.local/share/LuaAddons/factorio/plugin.lua",
 	"workspace.library": [
 		"/home/zack/.local/share/LuaAddons/factorio",
-		"/home/zack/.local/share/LuaAddons/factorio-data"
+		"/home/zack/.local/share/LuaAddons/factorio-data",
+        "/home/zack/.local/share/LuaAddons/factorio/library"
 	]
 }
