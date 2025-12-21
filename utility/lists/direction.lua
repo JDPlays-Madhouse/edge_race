@@ -8,44 +8,10 @@ local directions_of_travel = {} ---@class DirectionOfTravel
 
 ---@alias CardinalDirection defines.direction.north|defines.direction.east|defines.direction.west|defines.direction.south
 
---- Generates all the race parameters.
---- @param direction_setting CardinalDirection
----@return Direction Direction Settings for the race.
-directions_of_travel.direction = function(direction_setting)
-    local race_width = 500;
-
-    local direction = {
-        name = direction_setting,
-        race_width = race_width,
-        map_gen_settings = { width = 2000000, height = 2000000, },
-        starting_back_wall = 100,
-        cardinal =
-            direction_setting
-    };
-
-    if direction_setting == defines.direction.north then
-        direction.map_gen_settings.width = race_width
-        direction.starting_back_wall = -race_width
-    elseif direction_setting == defines.direction.west then
-        direction.map_gen_settings.height = race_width
-        direction.starting_back_wall = race_width
-    elseif direction_setting == defines.direction.south then
-        direction.map_gen_settings.width = race_width
-        direction.starting_back_wall = race_width
-    else
-        direction.map_gen_settings.height = race_width
-        direction.starting_back_wall = -race_width
-    end --[[@cast direction Direction]]
-
-    return direction;
-end
-
-
 --- Map Generation Settings for Plant creation.
---- @param direction_setting defines.direction.north|defines.direction.east|defines.direction.west|defines.direction.south
 ---@return MapGenSettings
-directions_of_travel.map_gen_settings = function(direction_setting)
-    return directions_of_travel.direction(direction_setting).map_gen_settings;
+directions_of_travel.map_gen_settings = function()
+    return directions_of_travel.direction_with_settings().map_gen_settings;
 end
 
 
@@ -65,7 +31,8 @@ directions_of_travel.map_direction = function(input)
         return nil
     end
 end
---- Generates all the race parameters.
+
+--- Generates all the race parameters from startup settings.
 ---@return Direction Direction Settings for the race.
 directions_of_travel.direction_with_settings = function()
     local race_width = settings.startup["race-width"].value; ---@cast race_width int;

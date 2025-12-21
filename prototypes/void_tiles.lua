@@ -18,14 +18,14 @@ function wall_noise_function()
     local noise;
     if direction.cardinal == defines.direction.north then
         log("DirectionOfTravel North")
-        noise = "(((y<=(" .. offset .. "))*-1)+(y>" .. offset .. "))*1000000"
+        noise = "(((y<=(" .. offset .. "))*-1)+(y>" .. offset .. "))*1000000000"
     elseif direction.cardinal == defines.direction.south then
         log("DirectionOfTravel South")
-        noise = "(((y>=" .. offset .. ")*-1)+(y<" .. offset .. "))*1000000"
+        noise = "(((y>=" .. offset .. ")*-1)+(y<" .. offset .. "))*1000000000"
     elseif direction.cardinal == defines.direction.west then
-        noise = "(((x<=" .. offset .. ")*-1)+(x>" .. offset .. "))*1000000"
+        noise = "(((x<=" .. offset .. ")*-1)+(x>" .. offset .. "))*1000000000"
     elseif direction.cardinal == defines.direction.east then
-        noise = "(((x>=" .. offset .. ")*-1)+(x<" .. offset .. "))*1000000"
+        noise = "(((x>=" .. offset .. ")*-1)+(x<" .. offset .. "))*1000000000"
     end
     log("Noise function: " .. noise)
 
@@ -70,28 +70,4 @@ if mods["space-age"] then
     }
     out_of_map = util.merge({ out_of_map, mod_void });
     data.raw["tile"]["out-of-map"] = out_of_map;
-end
-
-for name, planet in pairs(data.raw["planet"]) do
-    planet = table.deepcopy(planet);
-
-    local map_gen_settings = planet.map_gen_settings;
-
-    if map_gen_settings == nil then
-        map_gen_settings = {};
-    end
-
-    if map_gen_settings.autoplace_settings ~= nil then
-        map_gen_settings.autoplace_settings["tile"].settings["out-of-map"] = {
-        }
-    else
-        map_gen_settings.autoplace_settings = {
-            ["tile"] = {
-                settings = {
-                    ["out-of-map"] = {}
-                }
-            }
-        }
-    end
-    data.raw["planet"][name].map_gen_settings = map_gen_settings
 end
