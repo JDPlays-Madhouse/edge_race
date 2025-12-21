@@ -2,9 +2,6 @@
 
 -- TODO: Add a space age check.
 local directions_of_travel = require("__edge_race__.utility.lists.direction"); ---@type DirectionOfTravel
-local collision_mask_util = require("__core__.lualib.collision-mask-util");
-local collision_mask_default = require("__core__.lualib.collision-mask-defaults");
-local character_collision_mask = collision_mask_default["character/flying"];
 
 -- local void_tile_collision_mask = table.deepcopy(data.raw["tile"]["out-of-map"].collision_mask);
 local my_void_tile = table.deepcopy(data.raw["tile"]["out-of-map"]);
@@ -17,49 +14,63 @@ function wall_noise_function()
     local direction = directions_of_travel.direction_with_settings();
     -- direction = directions_of_travel.direction(defines.direction.west);
     -- direction.cardinal = defines.direction.west;
-
+    local offset = direction.starting_back_wall;
     local noise;
     if direction.cardinal == defines.direction.north then
-        noise = "y<(" .. direction.starting_back_wall .. ")";
+        log("DirectionOfTravel North")
+        noise = "(((y<=(" .. offset .. "))*-1)+(y>" .. offset .. "))*1000000"
     elseif direction.cardinal == defines.direction.south then
-        noise = "y>(" .. direction.starting_back_wall .. ")";
+        log("DirectionOfTravel South")
+        noise = "(((y>=" .. offset .. ")*-1)+(y<" .. offset .. "))*1000000"
     elseif direction.cardinal == defines.direction.west then
-        noise = "x>(" .. direction.starting_back_wall .. ")";
+        noise = "(((x<=" .. offset .. ")*-1)+(x>" .. offset .. "))*1000000"
     elseif direction.cardinal == defines.direction.east then
-        noise = "x<(" .. direction.starting_back_wall .. ")";
+        noise = "(((x>=" .. offset .. ")*-1)+(x<" .. offset .. "))*1000000"
     end
+    log("Noise function: " .. noise)
 
     return noise
 end
 
 -- void_tile_collision_mask.layers["race-void-tile"] = true
 my_void_tile.name = "race-void-tile";
-my_void_tile.layer = 1;
--- my_void_tile.collision_mask = {
---     layers = {
---         -- ground_tile=true,
---         -- water_tile=true,
---         -- resource=true,
---         floor = true,
---         item = true,
---         object = true,
---         player = true,
---         doodad = true,
---         out_of_map = true
---     }
--- };
-my_void_tile.autoplace = {
-    -- probability_expression = wall_noise_function(),
-    -- richness_expression = wall_noise_function(),
-
-    probability_expression = "(x>100)*100000+(x<=100)*-100000",
+local autoplace = {
+    probability_expression = wall_noise_function(),
     default_enabled = false,
-    order = "zzzzz"
-}
-data:extend({
-    my_void_tile,
-}
-)
+};
+
+
+-- my_void_tile.autoplace = autoplace
+-- data:extend({
+--     my_void_tile,
+-- })
+--
+data.raw["tile"]["out-of-map"].autoplace = autoplace
+
+if mods["space-age"] then
+    local util = require("__core__.lualib.util"); ---@type util
+    local out_of_map = data.raw["tile"]["out-of-map"];
+    local mod_void = {
+        effect = "space",
+        effect_color = { 0.5, 0.507, 0 },
+        effect_color_secondary = { 0, 68, 25 },
+        variants =
+        {
+            main =
+            {
+                {
+                    picture = "__space-age__/graphics/terrain/empty-space.png",
+                    count = 1,
+                    size = 1
+                }
+            },
+            empty_transitions = true
+        },
+        absorptions_per_second = { pollution = 0.00000018 }
+    }
+    out_of_map = util.merge({ out_of_map, mod_void });
+    data.raw["tile"]["out-of-map"] = out_of_map;
+end
 
 for name, planet in pairs(data.raw["planet"]) do
     planet = table.deepcopy(planet);
@@ -71,13 +82,13 @@ for name, planet in pairs(data.raw["planet"]) do
     end
 
     if map_gen_settings.autoplace_settings ~= nil then
-        map_gen_settings.autoplace_settings["tile"].settings["race-void-tile"] = {
+        map_gen_settings.autoplace_settings["tile"].settings["out-of-map"] = {
         }
     else
         map_gen_settings.autoplace_settings = {
             ["tile"] = {
                 settings = {
-                    ["race-void-tile"] = {}
+                    ["out-of-map"] = {}
                 }
             }
         }

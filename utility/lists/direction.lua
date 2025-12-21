@@ -68,11 +68,13 @@ end
 --- Generates all the race parameters.
 ---@return Direction Direction Settings for the race.
 directions_of_travel.direction_with_settings = function()
-    local race_width = 500;
+    local race_width = settings.startup["race-width"].value; ---@cast race_width int;
     local offset = settings.startup["wall-offset-distance"].value; ---@cast offset int
-    local direction_setting = directions_of_travel.map_direction(settings.startup["direction-of-travel"].value);
+    local direction_setting = directions_of_travel.map_direction(settings.startup["direction-of-travel"]
+        .value --[[@as string]]);
 
     local direction = {
+        name = direction_setting,
         race_width = race_width,
         map_gen_settings = { width = 2000000, height = 2000000, },
         cardinal =
@@ -81,20 +83,16 @@ directions_of_travel.direction_with_settings = function()
 
     if direction_setting == defines.direction.north then
         direction.map_gen_settings.width = race_width
+        direction.starting_back_wall = offset
+    elseif direction_setting == defines.direction.south then
+        direction.map_gen_settings.width = race_width
         direction.starting_back_wall = -offset
-        direction.name = defines.direction.north
     elseif direction_setting == defines.direction.west then
         direction.map_gen_settings.height = race_width
         direction.starting_back_wall = offset
-        direction.name = defines.direction.west
-    elseif direction_setting == defines.direction.south then
-        direction.map_gen_settings.width = race_width
-        direction.starting_back_wall = offset
-        direction.name = defines.direction.south
     else
         direction.map_gen_settings.height = race_width
         direction.starting_back_wall = -offset
-        direction.name = defines.direction.east
     end --[[@cast direction Direction]]
 
     return direction;
