@@ -1,2 +1,2 @@
-require("prototypes.map_gen")
-require("prototypes.void_tiles")
+require("prototypes.map-gen-preset")
+require("prototypes.tile")

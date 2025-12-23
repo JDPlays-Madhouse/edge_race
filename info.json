@@ -1,11 +1,11 @@
 {
 	"name": "edge_race",
-	"version": "0.2.1",
+	"version": "0.2.2",
 	"factorio_version": "2.0",
 	"title": "Edge Race",
 	"author": "Ozy_Viking",
 	"contact": "admin@hankin.io",
 	"homepage": "https://github.com/JDPlays-Madhouse/edge_race",
 	"description": "Race to the Edge",
-	"dependencies": ["base", "space-age"]
+	"dependencies": ["base", "? space-age"]
 }

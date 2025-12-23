@@ -6,10 +6,11 @@ local map_gen_settings = directions_of_travel.direction_with_settings().map_gen_
 for name, map_gen in pairs(map_gen_presets) do
     if name ~= "name" and name ~= "type" and name ~= "default" then
         local basic_settings = map_gen.basic_settings or {}; ---@type data.MapGenSettings
-        util.merge({ basic_settings, map_gen_settings });
+        basic_settings = util.merge({ basic_settings, map_gen_settings });
         data.raw["map-gen-presets"].default[name].basic_settings = basic_settings;
     end
 end
+
 
 
 

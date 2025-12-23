@@ -1,50 +1,33 @@
---- Use https://lua-api.factorio.com/latest/prototypes/CharacterPrototype.html#flying_collision_mask
-
--- TODO: Add a space age check.
 local directions_of_travel = require("__edge_race__.utility.lists.direction"); ---@type DirectionOfTravel
 
--- local void_tile_collision_mask = table.deepcopy(data.raw["tile"]["out-of-map"].collision_mask);
-local my_void_tile = table.deepcopy(data.raw["tile"]["out-of-map"]);
-
-
----Noise function for a given direction
+---Noise function for a current settings. For settinging the probabitity value to either
+----1,000,000,000 or 1,000,000,000 depending where the wall lies.
 ---@return string
 function wall_noise_function()
-    -- local offset = settings.startup["wall-offset-distance"].value; ---@cast offset uint
     local direction = directions_of_travel.direction_with_settings();
-    -- direction = directions_of_travel.direction(defines.direction.west);
-    -- direction.cardinal = defines.direction.west;
     local offset = direction.starting_back_wall;
     local noise;
-    if direction.cardinal == defines.direction.north then
-        log("DirectionOfTravel North")
+    if direction.name == defines.direction.north then
         noise = "(((y<=(" .. offset .. "))*-1)+(y>" .. offset .. "))*1000000000"
-    elseif direction.cardinal == defines.direction.south then
-        log("DirectionOfTravel South")
+    elseif direction.name == defines.direction.south then
         noise = "(((y>=" .. offset .. ")*-1)+(y<" .. offset .. "))*1000000000"
-    elseif direction.cardinal == defines.direction.west then
+    elseif direction.name == defines.direction.west then
         noise = "(((x<=" .. offset .. ")*-1)+(x>" .. offset .. "))*1000000000"
-    elseif direction.cardinal == defines.direction.east then
+    elseif direction.name == defines.direction.east then
         noise = "(((x>=" .. offset .. ")*-1)+(x<" .. offset .. "))*1000000000"
     end
-    log("Noise function: " .. noise)
-
     return noise
 end
 
+-- local my_void_tile = table.deepcopy(data.raw["tile"]["out-of-map"]);
+-- my_void_tile.name = "race-void-tile";
 -- void_tile_collision_mask.layers["race-void-tile"] = true
-my_void_tile.name = "race-void-tile";
+
 local autoplace = {
     probability_expression = wall_noise_function(),
     default_enabled = false,
 };
 
-
--- my_void_tile.autoplace = autoplace
--- data:extend({
---     my_void_tile,
--- })
---
 data.raw["tile"]["out-of-map"].autoplace = autoplace
 
 if mods["space-age"] then

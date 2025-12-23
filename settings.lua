@@ -12,8 +12,8 @@ data:extend({
         name = "wall-offset-distance",
         setting_type = "startup",
         order = "aa",
-        default_value = 100,
-        minimum_value = 0,
+        default_value = 500,
+        minimum_value = 500,
     },
     {
         type = "int-setting",
@@ -21,7 +21,7 @@ data:extend({
         setting_type = "startup",
         order = "ab",
         default_value = 500,
-        minimum_value = 100,
+        minimum_value = 500,
     },
     -- {
     --     type = "int-setting",
