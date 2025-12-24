@@ -23,6 +23,13 @@ data:extend({
         default_value = 500,
         minimum_value = 500,
     },
+    {
+        type = "double-setting",
+        name = "void-pollution-absorption",
+        setting_type = "startup",
+        order = "ac",
+        default_value = 0,
+    },
     -- {
     --     type = "int-setting",
     --     name = "time-until-wall-starts-moving",
